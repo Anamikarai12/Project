@@ -21,5 +21,32 @@ def login():
 def dashboard():
     return "Welcome to the Admin Dashboard."
 
+
+#Book issue
+@app.route('/issue_book', methods=['GET', 'POST'])
+def issue_book():
+    if request.method == 'POST':
+        book_name = request.form['book_name']
+        author_name = request.form['author_name']
+        issue_date = request.form['issue_date']
+        return_date = request.form['return_date']
+        
+       
+        if not book_name or not author_name or not issue_date or not return_date:
+            flash('All fields must be filled out.')
+            return redirect(url_for('issue_book'))
+        
+        
+        if issue_date < str(datetime.date.today()):
+            flash('Issue Date cannot be less than today.')
+            return redirect(url_for('issue_book'))
+        
+        
+        flash('Book issued successfully!')
+        return redirect(url_for('dashboard'))
+    
+    return render_template('issue_book.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True)

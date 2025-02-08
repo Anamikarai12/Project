@@ -73,5 +73,23 @@ def return_book():
     return render_template('return_book.html')
 
 
+#Add book
+@app.route('/add_book', methods=['GET', 'POST'])
+def add_book():
+    if request.method == 'POST':
+        book_name = request.form['book_name']
+        book_type = request.form['book_type']
+        
+        if not book_name or not book_type:
+            flash('All fields must be filled out.')
+            return redirect(url_for('add_book'))
+        
+        flash('Book added successfully!')
+        return redirect(url_for('dashboard'))
+    
+    return render_template('add_book.html')
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -47,6 +47,31 @@ def issue_book():
     
     return render_template('issue_book.html')
 
+#form validation 
+
+@app.route('/return_book', methods=['GET', 'POST'])
+def return_book():
+    if request.method == 'POST':
+        book_name = request.form['book_name']
+        serial_no = request.form['serial_no']
+        issue_date = request.form['issue_date']
+        return_date = request.form['return_date']
+        
+        
+        if not book_name or not serial_no or not issue_date or not return_date:
+            flash('All fields must be filled out.')
+            return redirect(url_for('return_book'))
+        
+        
+        if return_date < issue_date:
+            flash('Return Date cannot be earlier than Issue Date.')
+            return redirect(url_for('return_book'))
+        
+        flash('Book returned successfully!')
+        return redirect(url_for('dashboard'))
+    
+    return render_template('return_book.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
